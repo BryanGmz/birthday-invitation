@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Feliz Cumpleaños! 🎂</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        :root {
+            --red: #ef233c;
+            --yellow: #ffd166;
+            --blue: #118ab2;
+            --cream: #fff8f0;
+            --dark: #2b2d42;
+            --pink: #ffb3c6;
+            --light-blue: #caf0f8;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--cream);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Fondo de nubes animadas */
+        .bg-clouds {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+            background: linear-gradient(180deg, #caf0f8 0%, #fff8f0 60%);
+        }
+
+        .cloud {
+            position: absolute;
+            background: white;
+            border-radius: 50px;
+            opacity: 0.7;
+            animation: floatCloud linear infinite;
+        }
+        .cloud::before, .cloud::after {
+            content: '';
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+        }
+        .cloud:nth-child(1) { width: 120px; height: 40px; top: 10%; left: -130px; animation-duration: 18s; animation-delay: 0s; }
+        .cloud:nth-child(1)::before { width: 60px; height: 60px; top: -30px; left: 20px; }
+        .cloud:nth-child(1)::after { width: 40px; height: 40px; top: -20px; left: 55px; }
+        .cloud:nth-child(2) { width: 90px; height: 30px; top: 25%; left: -100px; animation-duration: 22s; animation-delay: 4s; }
+        .cloud:nth-child(2)::before { width: 45px; height: 45px; top: -22px; left: 15px; }
+        .cloud:nth-child(2)::after { width: 30px; height: 30px; top: -15px; left: 42px; }
+        .cloud:nth-child(3) { width: 140px; height: 45px; top: 5%; left: -150px; animation-duration: 25s; animation-delay: 10s; }
+        .cloud:nth-child(3)::before { width: 70px; height: 70px; top: -35px; left: 25px; }
+        .cloud:nth-child(3)::after { width: 50px; height: 50px; top: -25px; left: 65px; }
+        .cloud:nth-child(4) { width: 80px; height: 28px; top: 40%; left: -90px; animation-duration: 20s; animation-delay: 7s; }
+        .cloud:nth-child(4)::before { width: 40px; height: 40px; top: -20px; left: 12px; }
+        .cloud:nth-child(4)::after { width: 28px; height: 28px; top: -12px; left: 38px; }
+
+        @keyframes floatCloud {
+            from { left: -160px; }
+            to { left: 110%; }
+        }
+
+        /* Estrellas de fondo */
+        .stars {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .star {
+            position: absolute;
+            color: var(--yellow);
+            font-size: 1.2rem;
+            animation: twinkle 2s ease-in-out infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* Tarjeta principal */
+        .container {
+            width: 92%;
+            max-width: 420px;
+            background: white;
+            border-radius: 28px;
+            box-shadow: 0 20px 60px rgba(43, 45, 66, 0.15), 0 0 0 4px var(--yellow), 0 0 0 7px white, 0 0 0 10px var(--red);
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            overflow: hidden;
+        }
+
+        /* Header decorativo */
+        .card-header {
+            background: linear-gradient(135deg, var(--red) 0%, #ff6b6b 100%);
+            padding: 18px 20px 14px;
+            position: relative;
+            overflow: hidden;
+        }
+        .card-header::after {
+            content: '';
+            position: absolute;
+            bottom: -12px; left: 0;
+            width: 100%; height: 24px;
+            background: white;
+            border-radius: 50% 50% 0 0;
+        }
+        .banner-text {
+            font-family: 'Pacifico', cursive;
+            color: white;
+            font-size: 1.4rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            letter-spacing: 2px;
+        }
+        .banner-icons {
+            font-size: 1.5rem;
+            margin-top: 5px;
+        }
+
+        /* Cuerpo de pantallas */
+        .screen-body {
+            padding: 28px 24px 24px;
+        }
+
+        h1 {
+            font-family: 'Pacifico', cursive;
+            color: var(--red);
+            font-size: 2.2rem;
+            margin-bottom: 12px;
+            line-height: 1.2;
+        }
+
+        h2 {
+            font-family: 'Pacifico', cursive;
+            color: var(--dark);
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+        }
+
+        p {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: var(--dark);
+            margin-bottom: 14px;
+        }
+
+        .hidden { display: none; }
+
+        .btn {
+            background: linear-gradient(135deg, var(--red), #ff6b6b);
+            color: white;
+            border: none;
+            padding: 13px 28px;
+            font-size: 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 800;
+            font-family: 'Nunito', sans-serif;
+            margin: 6px auto;
+            display: inline-block;
+            box-shadow: 0 5px 20px rgba(239, 35, 60, 0.35);
+            transition: transform 0.2s, box-shadow 0.2s;
+            letter-spacing: 0.5px;
+        }
+        .btn:hover, .btn:active {
+            transform: scale(1.06) translateY(-2px);
+            box-shadow: 0 8px 25px rgba(239, 35, 60, 0.45);
+        }
+        .btn-blue {
+            background: linear-gradient(135deg, var(--blue), #06d6a0);
+        }
+        .btn-blue:hover {
+            box-shadow: 0 8px 25px rgba(17, 138, 178, 0.45);
+        }
+
+        /* Snoopy imagen */
+        .snoopy-wrap {
+            margin: 10px auto 16px;
+            display: flex;
+            justify-content: center;
+        }
+        .snoopy-wrap img {
+            width: 130px;
+            height: 130px;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.12));
+        }
+
+        /* Tarjeta de dato */
+        .info-card {
+            background: linear-gradient(135deg, #fff8f0, #ffecd2);
+            border: 2px dashed var(--yellow);
+            border-radius: 18px;
+            padding: 16px 18px;
+            margin-bottom: 16px;
+            text-align: left;
+        }
+        .info-card .label {
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: var(--red);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 4px;
+        }
+        .info-card .value {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+        .info-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        .info-row:last-child { margin-bottom: 0; }
+        .info-icon {
+            font-size: 1.8rem;
+            flex-shrink: 0;
+        }
+        .info-text .label {
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: var(--red);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+        .info-text .value {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+        .info-text .note {
+            font-size: 0.8rem;
+            color: #888;
+            font-style: italic;
+        }
+
+        /* Foto — sin recorte, se ve completa */
+        .photo-wrap {
+            border-radius: 20px;
+            overflow: hidden;
+            border: 4px solid var(--yellow);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12), 5px 5px 0 var(--red);
+            margin-bottom: 18px;
+            background: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .photo-wrap img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: contain;
+        }
+
+        /* Opciones de respuesta */
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        #btn-no {
+            background: linear-gradient(135deg, #adb5bd, #6c757d);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            position: relative;
+            transition: transform 0.25s ease;
+        }
+        #btn-no:hover {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        /* Pantalla final */
+        .final-photo {
+            border-radius: 18px;
+            overflow: hidden;
+            border: 3px solid var(--pink);
+            margin-bottom: 16px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            background: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .final-photo img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: contain;
+        }
+
+        /* Corazones flotantes */
+        .hearts-wrap {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 5;
+        }
+        .heart-float {
+            position: absolute;
+            bottom: -60px;
+            font-size: 1.5rem;
+            animation: riseHeart linear forwards;
+            opacity: 0;
+        }
+        @keyframes riseHeart {
+            0% { bottom: -60px; opacity: 1; transform: translateX(0) rotate(0deg); }
+            100% { bottom: 110%; opacity: 0; transform: translateX(40px) rotate(30deg); }
+        }
+
+        /* Fade in */
+        .fade-in {
+            animation: fadeIn 0.7s ease forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(18px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Decoración de puntos */
+        .dots-row {
+            display: flex;
+            justify-content: center;
+            gap: 7px;
+            margin: 14px 0 6px;
+        }
+        .dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: var(--pink);
+        }
+        .dot:nth-child(2) { background: var(--yellow); }
+        .dot:nth-child(3) { background: var(--light-blue); }
+        .dot:nth-child(4) { background: var(--red); }
+        .dot:nth-child(5) { background: var(--yellow); }
+
+        /* Cinta/banner de cumpleaños */
+        .birthday-ribbon {
+            background: var(--yellow);
+            color: var(--dark);
+            font-weight: 800;
+            font-size: 0.85rem;
+            padding: 6px 0;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        /* Viñeta de motivo */
+        .reason-bubble {
+            background: #fff0f6;
+            border-left: 4px solid var(--red);
+            border-radius: 0 16px 16px 0;
+            padding: 14px 16px;
+            font-style: italic;
+            font-size: 0.95rem;
+            color: #555;
+            margin-bottom: 16px;
+            text-align: left;
+        }
+
+        /* Countdown numbers */
+        .countdown-wrap {
+            display: flex;
+            justify-content: center;
+            gap: 14px;
+            margin: 14px 0;
+        }
+        .count-box {
+            background: linear-gradient(135deg, var(--red), #ff6b6b);
+            color: white;
+            border-radius: 12px;
+            padding: 10px 14px;
+            min-width: 60px;
+        }
+        .count-box .num {
+            font-family: 'Pacifico', cursive;
+            font-size: 1.8rem;
+            line-height: 1;
+            display: block;
+        }
+        .count-box .lbl {
+            font-size: 0.65rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            opacity: 0.85;
+        }
+
+        /* Paw print decoration */
+        .paw-row {
+            font-size: 1.1rem;
+            letter-spacing: 4px;
+            color: #ccc;
+            margin: 10px 0 6px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Fondos -->
+<div class="bg-clouds">
+    <div class="cloud"></div>
+    <div class="cloud"></div>
+    <div class="cloud"></div>
+    <div class="cloud"></div>
+</div>
+<div class="stars" id="starsContainer"></div>
+<div class="hearts-wrap" id="heartsWrap"></div>
+
+<!-- Tarjeta -->
+<div class="container fade-in" id="card">
+
+    <!-- PANTALLA 1: Portada -->
+    <div id="screen-1">
+        <div class="card-header">
+            <div class="banner-text">✦ UNA INVITACIÓN ✦</div>
+            <div class="banner-icons">🎂 🎀 🎈</div>
+        </div>
+        <div class="screen-body">
+            <div class="snoopy-wrap">
+                <!-- Snoopy bailando con sombrero de fiesta -->
+                <img
+                  src="https://www.pngall.com/wp-content/uploads/2016/04/Snoopy-Free-PNG-Image.png"
+                  alt="Snoopy bailando"
+                  onerror="this.src='https://instagram.fgua3-6.fna.fbcdn.net/v/t51.82787-15/626616447_18105433522753701_6400748979832101577_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=105&ig_cache_key=MzQzMTk1NDE1MzYxMjUxNzIzMw%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6IkZFRUQueHBpZHMuNzM1LnNkci5yZWd1bGFyX3Bob3RvLkMzIn0%3D&_nc_ohc=wh8hMDzOANEQ7kNvwHoXPRu&_nc_oc=AdpC4OEPlaWphzSWg6nWkggFHuJ7kDEy7Ib52yUguxhkqLmE3qmPeHj8OPsSg1A_8KoYQWKTxtf_QSbMgAfj64yR&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=instagram.fgua3-6.fna&_nc_gid=x0q-_EHnrdaOkQNqmlDEiw&_nc_ss=7a22e&oh=00_Af5VB23VoOsw8UR86pkjVqjZTnX6NmgCftkkRMcJL13YpQ&oe=6A000CDE'"
+                />
+            </div>
+
+            <h1>¡Hola, mi preciosa! 🎂</h1>
+            <p style="color:#888; font-size:0.95rem;">Tengo algo muy especial esperándote...</p>
+            <p><strong style="color:var(--red)">De:</strong> Ing. Bryan 🙈<br>
+               <strong style="color:var(--red)">Para:</strong> La persona que hace brillar mis días</p>
+            <div class="paw-row">🐾 🐾 🐾 🐾 🐾</div>
+            <button class="btn" onclick="nextScreen(1)">Abrir invitación 🎀</button>
+        </div>
+    </div>
+
+    <!-- PANTALLA 2: ¿Por qué este día? -->
+    <div id="screen-2" class="hidden">
+        <div class="card-header">
+            <div class="banner-text">✦ TU DÍA ESPECIAL ✦</div>
+            <div class="banner-icons">🌟 🎂 🌟</div>
+        </div>
+        <div class="screen-body">
+            <div class="snoopy-wrap">
+                <!-- Snoopy con pastel -->
+                <img
+                  src="https://ih1.redbubble.net/image.5936225204.6632/st,small,507x507-pad,600x600,f8f8f8.jpg"
+                  alt="Snoopy con pastel"
+                  onerror="this.src='https://upload.wikimedia.org/wikipedia/en/5/53/Snoopy_Peanuts_character.png'"
+                />
+            </div>
+
+            <div class="birthday-ribbon">🎉 viernes 15 de mayo 🎉</div>
+
+            <div class="reason-bubble">
+                "Hay días que merecen ser especiales desde el primer rayito de sol… y este es uno de ellos. ¡Porque tú lo mereces todo!"
+            </div>
+
+            <p>Este día quiero dedicarlo completamente a hacerte feliz. 🌸</p>
+
+            <div id="countdown-display" class="countdown-wrap">
+                <!-- Se llena por JS -->
+            </div>
+
+            <div class="dots-row">
+                <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+            </div>
+            <button class="btn" onclick="nextScreen(2)">¿Y el plan? 🗓️</button>
+        </div>
+    </div>
+
+    <!-- PANTALLA 3: El plan -->
+    <div id="screen-3" class="hidden">
+        <div class="card-header">
+            <div class="banner-text">✦ EL PLAN ✦</div>
+            <div class="banner-icons">📍 🕐 💛</div>
+        </div>
+        <div class="screen-body">
+            <div class="info-card">
+                <div class="info-row">
+                    <div class="info-icon">📅</div>
+                    <div class="info-text">
+                        <div class="label">Fecha</div>
+                        <div class="value">Viernes, 15 de Mayo</div>
+                    </div>
+                </div>
+                <div class="info-row">
+                    <div class="info-icon">🕐</div>
+                    <div class="info-text">
+                        <div class="label">Hora de inicio</div>
+                        <div class="value">~11:00 AM ☀️</div>
+                        <div class="note">(o cuando tú digas)</div>
+                    </div>
+                </div>
+                <div class="info-row">
+                    <div class="info-icon">⏳</div>
+                    <div class="info-text">
+                        <div class="label">Duración</div>
+                        <div class="value">Todo el tiempo posible</div>
+                        <div class="note">Cada minuto contigo es un regalo 🎁</div>
+                    </div>
+                </div>
+                <div class="info-row">
+                    <div class="info-icon">🎯</div>
+                    <div class="info-text">
+                        <div class="label">Misión</div>
+                        <div class="value">¡Que sea tu mejor cumpleaños!</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="paw-row">🐾 🐾 🐾</div>
+
+            <p style="font-size:0.92rem; color:#777;">Snoopy dice que los mejores días no se planean al milímetro… <em>simplemente suceden</em> cuando estás con las personas correctas. 🐶✨</p>
+
+            <button class="btn" onclick="nextScreen(3)">¿Vendrás conmigo? 🥺</button>
+        </div>
+    </div>
+
+    <!-- PANTALLA 4: La propuesta -->
+    <div id="screen-4" class="hidden">
+        <div class="card-header">
+            <div class="banner-text">✦ LA PREGUNTA ✦</div>
+            <div class="banner-icons">🌹 💭 🌹</div>
+        </div>
+        <div class="screen-body">
+            <div class="photo-wrap">
+                <img src="https://lh3.googleusercontent.com/pw/AP1GczMHH-ze3PsVdtq5AldLk55uGksjdZGPkF2t6Kmf-347ZgVyFj_d-j5oQ60cPZvFhRRGUSrN-z-hhPf2Gf8JWJ3p5B4DWyNro6QJJ60cZ10o9k7Nllh4aTlDuwCLPPKpm1odop27HAjkou_D-Q9Atpgn=w960-h1280-s-no-gm?authuser=0" alt="Foto especial">
+            </div>
+
+            <h2>¿Celebrarás tu cumpleaños conmigo? 🥳</h2>
+            <p style="font-size:0.92rem; color:#777;">Prometo que tendremos el mejor tiempo juntos. Con risas, detalles y todo mi cariño. 💛</p>
+
+            <div class="options">
+                <button class="btn btn-blue" onclick="finish()">¡Claro que sí! 🎉</button>
+                <button class="btn" onclick="finish()">¡Sí, me encanta el plan! 💖</button>
+                <button id="btn-no" class="btn" onmouseover="moveButton()" ontouchstart="moveButton()">No gracias 😝 (atrápame)</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANTALLA 5: Final ¡Sí! -->
+    <div id="screen-5" class="hidden">
+        <div class="card-header">
+            <div class="banner-text">✦ ¡ES OFICIAL! ✦</div>
+            <div class="banner-icons">🎊 🎂 🎊</div>
+        </div>
+        <div class="screen-body">
+            <h1>¡PERFECTO! 🎉</h1>
+
+            <div class="final-photo">
+                <!-- Foto "nosotros" desde Google Photos shared link -->
+                <img
+                  src="https://lh3.googleusercontent.com/pw/AP1GczP6f9WkqTnkarobQH_GVcSCVqM-Zyj1gSTg9cLm39_fu7cn1IMMti3Rmek8uw2DOw0JlBKxhtOnLFys25rqGEyI6bk5lxeer9WRLIqHXnBc7Wc-mjaGfSRBWeh8TnbB6qw8_m2oUjtUqui1_pxrpVn1=w960-h1280-s-no-gm?authuser=0"
+                  alt="Nosotros"
+                  onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/pw/AP1GczO6r29ILOiRBd5JGf74E7hEfrRhGYi2eW_eRrNY7hthyQgmP6qtBR-w_5kryhhe7-tBvdWmtAp7bKPFhMzLUKkb-29Kpy50-KQRiEyMcBOihw4ixCE=w600-h315-p-k';"
+                  id="nosotros-img"
+                />
+            </div>
+
+            <p>¡Te espero el <strong>viernes 15 de mayo</strong> para celebrar tu día juntos! 🎂🥂</p>
+
+            <div class="info-card" style="text-align:center; border: 2px solid var(--red);">
+                <div style="font-size:1.6rem; margin-bottom:6px;">🐾💛🐾</div>
+                <p style="margin:0; font-weight:700; color:var(--dark);">
+                    "Feliz cumpleaños anticipado, mi preciosa.<br>¡Que este día sea tan especial como tú!"
+                </p>
+                <div style="margin-top:10px; font-size:0.85rem; color:#888;">— Con todo mi amor, Ing. Bryan 🙈 —</div>
+            </div>
+
+            <div class="paw-row">🐾 ❤️ 🐾 ❤️ 🐾</div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // ── Intentar resolver el enlace de Google Photos ──────────────────
+    // Google Photos share links redirigen a una página HTML, no a una imagen directa.
+    // Usamos un iframe oculto para detectar la URL final de la imagen.
+    // Como alternativa más robusta, intentamos cargar via fetch con no-cors
+    // y dejamos el onerror del <img> como fallback.
+
+    // Generar estrellas de fondo
+    const starsContainer = document.getElementById('starsContainer');
+    const starSymbols = ['✦','✧','★','✦','•'];
+    for (let i = 0; i < 18; i++) {
+        const s = document.createElement('div');
+        s.classList.add('star');
+        s.textContent = starSymbols[Math.floor(Math.random() * starSymbols.length)];
+        s.style.left = Math.random() * 100 + '%';
+        s.style.top = Math.random() * 100 + '%';
+        s.style.animationDelay = (Math.random() * 3) + 's';
+        s.style.animationDuration = (1.5 + Math.random() * 2) + 's';
+        s.style.fontSize = (0.7 + Math.random() * 1) + 'rem';
+        starsContainer.appendChild(s);
+    }
+
+    // Countdown al cumpleaños
+    function updateCountdown() {
+        const now = new Date();
+        const birthday = new Date(now.getFullYear(), 4, 15, 11, 0, 0); // Mayo = 4
+        if (now > birthday) birthday.setFullYear(birthday.getFullYear() + 1);
+        const diff = birthday - now;
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const container = document.getElementById('countdown-display');
+        if (container) {
+            container.innerHTML = `
+                <div class="count-box"><span class="num">${days}</span><span class="lbl">Días</span></div>
+                <div class="count-box"><span class="num">${hours}</span><span class="lbl">Horas</span></div>
+                <div class="count-box"><span class="num">${mins}</span><span class="lbl">Min</span></div>
+            `;
+        }
+    }
+    updateCountdown();
+    setInterval(updateCountdown, 30000);
+
+    // Cambiar de pantallas
+    function nextScreen(current) {
+        document.getElementById(`screen-${current}`).classList.add('hidden');
+        const next = document.getElementById(`screen-${current + 1}`);
+        next.classList.remove('hidden');
+        next.classList.add('fade-in');
+        launchHearts(4);
+    }
+
+    // Botón "No" escurridizo
+    function moveButton() {
+        const btn = document.getElementById('btn-no');
+        const maxX = 90;
+        const maxY = 60;
+        const rx = Math.floor(Math.random() * maxX * 2) - maxX;
+        const ry = Math.floor(Math.random() * maxY * 2) - maxY;
+        btn.style.transform = `translate(${rx}px, ${ry}px)`;
+    }
+
+    // Final con confeti y corazones
+    function finish() {
+        document.getElementById('screen-4').classList.add('hidden');
+        const s5 = document.getElementById('screen-5');
+        s5.classList.remove('hidden');
+        s5.classList.add('fade-in');
+        launchConfetti();
+        launchHearts(20);
+    }
+
+    function launchConfetti() {
+        const duration = 5000;
+        const end = Date.now() + duration;
+        const colors = ['#ef233c', '#ffd166', '#118ab2', '#ffb3c6', '#06d6a0'];
+        const interval = setInterval(() => {
+            if (Date.now() > end) return clearInterval(interval);
+            const t = (end - Date.now()) / duration;
+            confetti({ particleCount: 40 * t, spread: 360, startVelocity: 30, origin: { x: rnd(0.1, 0.3), y: Math.random() - 0.2 }, colors });
+            confetti({ particleCount: 40 * t, spread: 360, startVelocity: 30, origin: { x: rnd(0.7, 0.9), y: Math.random() - 0.2 }, colors });
+        }, 250);
+    }
+
+    function rnd(min, max) { return Math.random() * (max - min) + min; }
+
+    function launchHearts(count) {
+        const wrap = document.getElementById('heartsWrap');
+        const symbols = ['❤️','💛','🧡','💖','💕','🐾'];
+        for (let i = 0; i < count; i++) {
+            setTimeout(() => {
+                const h = document.createElement('div');
+                h.classList.add('heart-float');
+                h.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+                h.style.left = (10 + Math.random() * 80) + '%';
+                h.style.animationDuration = (2.5 + Math.random() * 2.5) + 's';
+                h.style.fontSize = (1 + Math.random() * 1.2) + 'rem';
+                wrap.appendChild(h);
+                setTimeout(() => h.remove(), 6000);
+            }, i * 180);
+        }
+    }
+</script>
+
+</body>
+</html>
